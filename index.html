@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lead Analyzer</title>
+  <title>Lead Analyzer & Promo Calculator</title>
   <style>
     * {
       margin: 0;
@@ -69,7 +69,7 @@
     }
 
     .header {
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       text-align: center;
     }
 
@@ -89,8 +89,59 @@
       font-weight: 400;
     }
 
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      margin-bottom: -2px;
+    }
+
+    .tab-btn.active {
+      color: #2563eb;
+      border-bottom-color: #2563eb;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .form-section {
-      margin-bottom: 40px;
+      margin-bottom: 32px;
     }
 
     .input-group {
@@ -130,6 +181,37 @@
       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
     }
 
+    .checkbox-group {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+
+    .checkbox-group label:last-child {
+      margin-bottom: 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #2563eb;
+    }
+
     .btn {
       width: 100%;
       padding: 16px 32px;
@@ -141,7 +223,7 @@
       color: white;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 28px;
+      margin-top: 8px;
       text-transform: uppercase;
       letter-spacing: 1.2px;
       box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
@@ -163,17 +245,6 @@
 
     .results.show {
       display: block;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .metrics-grid {
@@ -341,6 +412,68 @@
       box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
     }
 
+    .promo-result {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .promo-result:hover {
+      border-color: #2563eb;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .promo-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .promo-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: #10b981;
+      margin-bottom: 12px;
+    }
+
+    .promo-breakdown {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      background: var(--bg-tertiary);
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+
+    .promo-breakdown div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .promo-breakdown div:last-child {
+      margin-bottom: 0;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 8px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .savings {
+      font-size: 14px;
+      color: #10b981;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
     @media (max-width: 600px) {
       .container {
         padding: 24px;
@@ -363,73 +496,130 @@
         padding: 14px 24px;
         font-size: 15px;
       }
+
+      .tabs {
+        gap: 8px;
+      }
+
+      .tab-btn {
+        padding: 10px 16px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Lead Analyzer</h1>
-      <p>Your sourcing lead scoring system</p>
+      <h1>Lead Tools</h1>
+      <p>Analyzer & Promo Calculator</p>
     </div>
 
-    <div class="form-section">
-      <div class="input-group">
-        <label for="spm">Sales per month (SPM)</label>
-        <input type="number" id="spm" placeholder="e.g., 300" />
-      </div>
-
-      <div class="input-group">
-        <label for="cost">Cost price (£)</label>
-        <input type="number" id="cost" step="0.01" placeholder="e.g., 5.00" />
-      </div>
-
-      <div class="input-group">
-        <label for="profit">Profit per unit (£)</label>
-        <input type="number" id="profit" step="0.01" placeholder="e.g., 10.50" />
-      </div>
-
-      <div class="input-group">
-        <label for="roi">ROI (%)</label>
-        <input type="number" id="roi" step="0.1" placeholder="e.g., 25" />
-      </div>
-
-      <button class="btn" onclick="analyze()">Analyze Lead</button>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('analyzer', this)">Lead Analyzer</button>
+      <button class="tab-btn" onclick="switchTab('promo', this)">Promo Calculator</button>
     </div>
 
-    <div class="results" id="results">
-      <div class="metrics-grid">
-        <div class="metric-card spm">
-          <div class="metric-label">SPM</div>
-          <div class="metric-value" id="spm-display">0</div>
+    <!-- TAB 1: LEAD ANALYZER -->
+    <div id="analyzer" class="tab-content active">
+      <div class="form-section">
+        <div class="input-group">
+          <label for="spm">Sales per month (SPM)</label>
+          <input type="number" id="spm" placeholder="e.g., 300" />
         </div>
-        <div class="metric-card profit">
-          <div class="metric-label">Profit/unit</div>
-          <div class="metric-value" id="profit-display">£0</div>
+
+        <div class="input-group">
+          <label for="cost">Cost price (£)</label>
+          <input type="number" id="cost" step="0.01" placeholder="e.g., 5.00" />
         </div>
-        <div class="metric-card roi">
-          <div class="metric-label">ROI</div>
-          <div class="metric-value" id="roi-display">0%</div>
+
+        <div class="input-group">
+          <label for="profit">Profit per unit (£)</label>
+          <input type="number" id="profit" step="0.01" placeholder="e.g., 10.50" />
         </div>
-        <div class="metric-card tier">
-          <div class="metric-label">Tier</div>
-          <div class="metric-value" id="tier-display">—</div>
+
+        <div class="input-group">
+          <label for="roi">ROI (%)</label>
+          <input type="number" id="roi" step="0.1" placeholder="e.g., 25" />
+        </div>
+
+        <button class="btn" onclick="analyze()">Analyze Lead</button>
+      </div>
+
+      <div class="results" id="results">
+        <div class="metrics-grid">
+          <div class="metric-card spm">
+            <div class="metric-label">SPM</div>
+            <div class="metric-value" id="spm-display">0</div>
+          </div>
+          <div class="metric-card profit">
+            <div class="metric-label">Profit/unit</div>
+            <div class="metric-value" id="profit-display">£0</div>
+          </div>
+          <div class="metric-card roi">
+            <div class="metric-label">ROI</div>
+            <div class="metric-value" id="roi-display">0%</div>
+          </div>
+          <div class="metric-card tier">
+            <div class="metric-label">Tier</div>
+            <div class="metric-value" id="tier-display">—</div>
+          </div>
+        </div>
+
+        <div class="score-box">
+          <div class="score-label">Lead Score</div>
+          <div class="tier-badge" id="tier-badge"></div>
+          <div class="score-number" id="score-value">0</div>
+          <div class="score-bar">
+            <div class="score-fill" id="score-fill" style="width: 0%"></div>
+          </div>
+          <div class="score-note" id="score-note"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: PROMO CALCULATOR -->
+    <div id="promo" class="tab-content">
+      <div class="form-section">
+        <div class="input-group">
+          <label for="promo-price">Full price (£)</label>
+          <input type="number" id="promo-price" step="0.01" placeholder="e.g., 10.99" oninput="calculatePromo()" />
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 13px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px;">Available Promos</label>
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="promo-5off4" onchange="calculatePromo()" />
+              <span>5% off any 4 units</span>
+            </label>
+            <label>
+              <input type="checkbox" id="promo-ss" onchange="calculatePromo()" />
+              <span>15% Subscribe & Save</span>
+            </label>
+          </div>
         </div>
       </div>
 
-      <div class="score-box">
-        <div class="score-label">Lead Score</div>
-        <div class="tier-badge" id="tier-badge"></div>
-        <div class="score-number" id="score-value">0</div>
-        <div class="score-bar">
-          <div class="score-fill" id="score-fill" style="width: 0%"></div>
+      <div class="results" id="promo-results" style="display: none;">
+        <div class="promo-result">
+          <div class="promo-label">Final price per unit</div>
+          <div class="promo-value" id="promo-final">£0.00</div>
+          <div class="promo-breakdown" id="promo-breakdown"></div>
+          <div class="savings" id="promo-savings"></div>
         </div>
-        <div class="score-note" id="score-note"></div>
       </div>
     </div>
   </div>
 
   <script>
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      btn.classList.add('active');
+    }
+
     function analyze() {
       const spm = parseFloat(document.getElementById('spm').value) || 0;
       const cost = parseFloat(document.getElementById('cost').value) || 0;
@@ -539,8 +729,47 @@
       document.getElementById('results').classList.add('show');
     }
 
+    function calculatePromo() {
+      const fullPrice = parseFloat(document.getElementById('promo-price').value);
+      const promo5off4 = document.getElementById('promo-5off4').checked;
+      const promoSS = document.getElementById('promo-ss').checked;
+
+      if (!fullPrice || fullPrice <= 0) {
+        document.getElementById('promo-results').style.display = 'none';
+        return;
+      }
+
+      let price = fullPrice;
+      let breakdown = [];
+
+      breakdown.push(`<div>Full price<span>£${fullPrice.toFixed(2)}</span></div>`);
+
+      if (promo5off4) {
+        price = price * 0.95;
+        breakdown.push(`<div>5% off any 4<span>-5%</span></div>`);
+      }
+
+      if (promoSS) {
+        price = price * 0.85;
+        breakdown.push(`<div>15% Subscribe & Save<span>-15%</span></div>`);
+      }
+
+      price = Math.ceil(price * 100) / 100;
+
+      breakdown.push(`<div style="font-weight: 700; color: var(--text-primary);">Final price<span>£${price.toFixed(2)}</span></div>`);
+
+      document.getElementById('promo-final').textContent = '£' + price.toFixed(2);
+      document.getElementById('promo-breakdown').innerHTML = breakdown.join('');
+      document.getElementById('promo-savings').textContent = '';
+      document.getElementById('promo-results').style.display = 'block';
+    }
+
     document.getElementById('roi').addEventListener('keypress', e => {
       if (e.key === 'Enter') analyze();
+    });
+
+    document.getElementById('promo-price').addEventListener('keypress', e => {
+      if (e.key === 'Enter') calculatePromo();
     });
   </script>
 </body>
